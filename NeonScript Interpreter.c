@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
@@ -39,6 +41,11 @@ int main(int argc, char *argv[]) {
                 printf("%s\n", user_input);
             }
         }
+        // SLEEP command
+        else if (strncmp(line, "SLEEP ", 6) == 0) {
+    int seconds = atoi(line + 6);
+    sleep(seconds);
+}
         // You can add more commands here
     }
 
