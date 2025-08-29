@@ -23,3 +23,9 @@ PRINT Thank you!
 Clone the repository
 Compile the interpreter (gcc Main.c -o neonscript)
 Run your NeonScript file (./neonscript myscript.neo)
+
+# All Commands In NeonScript
+PRINT <message> (Prints to the terminal)
+INPUT <message> (Takes in input)
+// <Message> (Comment)
+SLEEP <time> (Waits set time then goes to next line)
