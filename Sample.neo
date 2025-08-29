@@ -2,3 +2,5 @@ PRINT Welcome to NeonScript!
 // This is a comment
 INPUT Enter your name:
 PRINT Thank you!
+SLEEP 2
+PRINT Thank you for using NeonScript!
