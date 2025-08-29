@@ -1,0 +1,4 @@
+PRINT Welcome to NeonScript!
+// This is a comment
+INPUT Enter your name:
+PRINT Thank you!
