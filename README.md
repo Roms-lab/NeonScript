@@ -20,3 +20,6 @@ PRINT Thank you!
 Clone the repository
 Compile the interpreter (gcc Main.c -o neonscript)
 Run your NeonScript file (./neonscript myscript.neo)
+<img width="400" height="120" alt="NeonscriptLogo" src="https://github.com/user-attachments/assets/efc9eb23-63fd-4e09-8d0b-0f689e295ded" />
+
+
