@@ -26,11 +26,11 @@ int main(int argc, char *argv[]) {
             continue;
         }
         // PRINT command
-        else if (strncmp(line, "PRINT ", 6) == 0) {
+        else if (strncmp(line, "print ", 6) == 0) {
             printf("%s\n", line + 6);
         }
         // INPUT command
-        else if (strncmp(line, "INPUT ", 6) == 0) {
+        else if (strncmp(line, "input ", 6) == 0) {
             printf("%s", line + 6); // Prompt
             printf(" "); // Add a space after prompt
             char user_input[256];
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
             }
         }
         // SLEEP command
-        else if (strncmp(line, "SLEEP ", 6) == 0) {
+        else if (strncmp(line, "delay ", 6) == 0) {
     int seconds = atoi(line + 6);
     sleep(seconds);
 }
