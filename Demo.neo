@@ -1,25 +1,78 @@
-// Example Neon Script
-set name Neon
-set language C
+// NeoScript Comprehensive Demo
+// Showcasing all language features
+
+neon.textcolor(cyan)
+print ==========================================
+print    WELCOME TO NEOSCRIPT DEMO
+print ==========================================
+neon.textcolor(reset)
+
+// Variables and string interpolation
+set name NeoScript
+set version 1.0
 set year 2025
-set greeting Hello from
+
+neon.textcolor(yellow)
+print Language: $name
+print Version: $version  
+print Year: $year
+neon.textcolor(reset)
+
+// Multi-word variables
+set greeting Hello and welcome to
+set message A powerful scripting language
+
 print $greeting $name!
-print This is a $language interpreter made in $year.
+print $message created in $year.
 
-// Multi-word variable assignment
-set motto Code and create
-print $motto
+print 
 
-// Input with prompt
-input "What's your favorite color? " color
-print Your favorite color is $color.
+// User input demonstration
+neon.textcolor(green)
+print Getting user information...
+neon.textcolor(reset)
+input "What's your name? " username
+input "What's your age? " age
 
-// Input without prompt
-input hobby
-print Your hobby is $hobby.
+neon.textcolor(blue)
+print Nice to meet you $username!
+print You are $age years old.
+neon.textcolor(reset)
 
-// You can use variables in print
-print $name likes $hobby and the color $color.
+print 
 
-// End of demo
-print --- End of Neon demo ---
+// Color demonstration
+neon.textcolor(yellow)
+print Testing all colors:
+neon.textcolor(red)
+print RED text
+neon.textcolor(green)
+print GREEN text
+neon.textcolor(blue)
+print BLUE text
+neon.textcolor(magenta)
+print MAGENTA text
+neon.textcolor(cyan)
+print CYAN text
+neon.textcolor(white)
+print WHITE text
+neon.textcolor(reset)
+
+print 
+
+// Loop demonstration
+neon.textcolor(yellow)
+print Repeat loop demonstration:
+neon.textcolor(reset)
+
+repeat (3)
+    print Hello $username from $name!
+
+print 
+
+neon.textcolor(cyan)
+print ==========================================
+print    DEMO COMPLETED SUCCESSFULLY!
+print    Thank you $username for testing $name!
+print ==========================================
+neon.textcolor(reset)
