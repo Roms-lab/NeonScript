@@ -4,3 +4,4 @@ input Enter your name:
 print Thank you!
 delay 2
 print Thank you for using NeonScript!
+set name NeonScript
