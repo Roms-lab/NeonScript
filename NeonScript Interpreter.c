@@ -39,6 +39,29 @@ void set_var(const char* name, const char* value) {
     }
 }
 
+// Helper: Set terminal text color using ANSI escape codes
+void set_text_color(const char* color) {
+    if (strcmp(color, "red") == 0) {
+        printf("\033[0;31m");
+    } else if (strcmp(color, "green") == 0) {
+        printf("\033[0;32m");
+    } else if (strcmp(color, "yellow") == 0) {
+        printf("\033[0;33m");
+    } else if (strcmp(color, "blue") == 0) {
+        printf("\033[0;34m");
+    } else if (strcmp(color, "magenta") == 0) {
+        printf("\033[0;35m");
+    } else if (strcmp(color, "cyan") == 0) {
+        printf("\033[0;36m");
+    } else if (strcmp(color, "white") == 0) {
+        printf("\033[0;37m");
+    } else if (strcmp(color, "reset") == 0) {
+        printf("\033[0m");
+    } else {
+        printf("Unknown color: %s\n", color);
+    }
+}
+
 int main(int argc, char *argv[]) {
     if (argc != 2) {
         printf("Usage: %s <source-file.neo>\n", argv[0]);
@@ -58,6 +81,21 @@ int main(int argc, char *argv[]) {
 
         if (strncmp(line, "//", 2) == 0) {
             continue;
+        }
+        // neon.textcolor(color)
+        else if (strncmp(line, "neon.textcolor(", 16) == 0) {
+            char color[64];
+            if (sscanf(line, "neon.textcolor(%63[^)])", color) == 1) {
+                // Remove any leading/trailing whitespace
+                char *start = color;
+                while (*start == ' ') start++;
+                char *end = start + strlen(start) - 1;
+                while (end > start && (*end == ' ' || *end == '\n')) {
+                    *end = '\0';
+                    end--;
+                }
+                set_text_color(start);
+            }
         }
         // SET command
         else if (strncmp(line, "set ", 4) == 0) {
