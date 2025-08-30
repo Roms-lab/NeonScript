@@ -93,8 +93,44 @@ int main(int argc, char *argv[]) {
             }
             printf("%s\n", output);
         }
-        // INPUT & DELAY as before...
-        // ...
+        // INPUT command with variable storage
+        else if (strncmp(line, "input ", 6) == 0) {
+            char* input_line = line + 6;
+            char prompt[256] = "";
+            char varname[64] = "";
+            
+            // Check if it has quotes (prompted input)
+            if (input_line[0] == '"') {
+                // Find closing quote
+                int i = 1;
+                while (input_line[i] && input_line[i] != '"') {
+                    prompt[i-1] = input_line[i];
+                    i++;
+                }
+                prompt[i-1] = '\0';
+                
+                // Skip quote and space, get variable name
+                i += 2; // skip " and space
+                sscanf(input_line + i, "%63s", varname);
+                
+                printf("%s", prompt);
+            } else {
+                // No prompt, just variable name
+                sscanf(input_line, "%63s", varname);
+            }
+            
+            // Get user input
+            char user_input[256];
+            if (fgets(user_input, sizeof(user_input), stdin)) {
+                // Remove newline
+                size_t in_len = strlen(user_input);
+                if (in_len > 0 && user_input[in_len - 1] == '\n') 
+                    user_input[in_len - 1] = '\0';
+                
+                // Store in variable
+                set_var(varname, user_input);
+            }
+        }
     }
 
     fclose(fp);
