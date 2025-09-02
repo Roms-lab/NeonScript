@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NeonScript IDE</title>
+<style>
+  body {
+    margin: 0;
+    background: #1e1e1e;
+    color: #ddd;
+    font-family: monospace, monospace;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #header {
+    background: #252526;
+    padding: 10px 15px;
+    border-bottom: 1px solid #444;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #branding {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  #branding .logo {
+    margin-right: 10px;
+    font-size: 1.5em;
+  }
+
+  #container {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+
+  #lineNumbers {
+    background: #2d2d2d;
+    color: #858585;
+    padding: 10px 8px;
+    text-align: right;
+    user-select: none;
+    font-size: 14px;
+    line-height: 20px;
+    border-right: 1px solid #444;
+    width: 50px;
+    overflow: hidden;
+    white-space: pre;
+  }
+
+  .editor-wrapper {
+    flex: 1;
+    position: relative;
+    font-family: monospace, monospace;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  #highlighting {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    z-index: 1;
+  }
+
+  #editor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    outline: none;
+    background: transparent;
+    color: transparent;
+    font-family: monospace, monospace;
+    font-size: 14px;
+    line-height: 20px;
+    border: none;
+    resize: none;
+    overflow: auto;
+    caret-color: #ddd; /* Makes the cursor visible */
+    z-index: 2;
+  }
+
+  /* Syntax highlighting classes */
+  .keyword {
+    color: #569cd6;
+    font-weight: bold;
+  }
+  
+  .string {
+    color: #ce9178;
+  }
+  
+  .number {
+    color: #b5cea8;
+  }
+  
+  .comment {
+    color: #aaffaa; /* A bright green for the glow effect */
+    font-style: italic;
+    text-shadow: 0 0 5px #aaffaa, 0 0 10px #aaffaa;
+  }
+
+  #buttons {
+    padding: 8px;
+    background: #252526;
+    border-top: 1px solid #444;
+  }
+
+  button {
+    background: #0e639c;
+    border: none;
+    color: white;
+    padding: 8px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+
+  button:hover {
+    background: #1177d1;
+  }
+</style>
+</head>
+<body>
+<div id="header">
+  <div id="branding">
+    <span class="logo">💡</span> NeonScript IDE
+  </div>
+  <div class="header-buttons">
+    <button onclick="downloadCode()">Download Code</button>
+  </div>
+</div>
+<div id="container">
+  <pre id="lineNumbers">1</pre>
+  <div class="editor-wrapper">
+    <pre id="highlighting"><code class="language-neon"></code></pre>
+    <textarea id="editor" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off"></textarea>
+  </div>
+</div>
+
+<script>
+  const editor = document.getElementById('editor');
+  const highlighting = document.getElementById('highlighting').querySelector('code');
+  const lineNumbers = document.getElementById('lineNumbers');
+  
+  // Keywords for NeonScript
+  const keywords = ['print', 'set', 'repeat', 'forever', 'input', 'neon.textcolor'];
+  
+  // Function to apply syntax highlighting
+  function applySyntaxHighlighting(code) {
+    // Escape HTML entities (ampersand first!)
+    let highlightedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+    // Strings (double quotes)
+    highlightedCode = highlightedCode.replace(/"([^"]*)"/g, '<span class="string">$&</span>');
+
+    // Numbers (integers and decimals)
+    highlightedCode = highlightedCode.replace(/\b\d+(\.\d+)?\b/g, '<span class="number">$&</span>');
+
+    // Keywords
+    keywords.forEach(keyword => {
+      const regex = new RegExp(`\\b${keyword}\\b`, 'g');
+      highlightedCode = highlightedCode.replace(regex, `<span class="keyword">${keyword}</span>`);
+    });
+
+    // Comments
+    highlightedCode = highlightedCode.replace(/\/\/.*/g, '<span class="comment">$&</span>');
+
+    highlighting.innerHTML = highlightedCode;
+  }
+
+  // Function to update line numbers
+  function updateLineNumbers() {
+    const lines = editor.value.split('\n').length;
+    let numbers = '';
+    for (let i = 1; i <= lines; i++) {
+      numbers += i + '\n';
+    }
+    lineNumbers.textContent = numbers;
+  }
+
+  // Auto-closing logic and auto-indenting on Enter
+  editor.addEventListener('keydown', (e) => {
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    const value = editor.value;
+
+    // Auto-closing quotes and parentheses
+    if (e.key === '"') {
+      if (start === end && value[start] !== '"') {
+        e.preventDefault();
+        editor.value = value.substring(0, start) + '""' + value.substring(end);
+        editor.setSelectionRange(start + 1, start + 1);
+      }
+    } else if (e.key === '(') {
+      if (start === end && value[start] !== ')') {
+        e.preventDefault();
+        editor.value = value.substring(0, start) + '()' + value.substring(end);
+        editor.setSelectionRange(start + 1, start + 1);
+      }
+    } else if (e.key === 'Tab') {
+        e.preventDefault();
+        editor.value = value.substring(0, start) + '\t' + value.substring(end);
+        editor.setSelectionRange(start + 1, start + 1);
+    } else if (e.key === 'Enter') {
+        const lines = value.substring(0, start).split('\n');
+        const currentLine = lines[lines.length - 1].trim();
+
+        const indentRegex = /^(forever|repeat\(\d+\))$/;
+
+        if (indentRegex.test(currentLine)) {
+            e.preventDefault();
+            const indentation = '\t';
+            editor.value = value.substring(0, start) + '\n' + indentation + value.substring(end);
+            editor.setSelectionRange(start + 1 + indentation.length, start + 1 + indentation.length);
+        }
+    }
+
+    // A small delay to ensure the event has fully processed
+    setTimeout(() => {
+        updateLineNumbers();
+        applySyntaxHighlighting(editor.value);
+    }, 1);
+  });
+
+  // Input event for updating line numbers and highlighting
+  editor.addEventListener('input', () => {
+    updateLineNumbers();
+    applySyntaxHighlighting(editor.value);
+  });
+
+  // Sync scroll between textarea, line numbers, and highlighting
+  editor.addEventListener('scroll', () => {
+    lineNumbers.scrollTop = editor.scrollTop;
+    highlighting.parentElement.scrollTop = editor.scrollTop;
+  });
+
+  // Download code as file
+  function downloadCode() {
+    const code = editor.value;
+    const blob = new Blob([code], {type: 'text/plain'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'script.neo';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // Initialize on load with a blank editor
+  updateLineNumbers();
+  applySyntaxHighlighting(editor.value);
+</script>
+</body>
+</html>
