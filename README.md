@@ -7,18 +7,18 @@ It is ideal for learning compiler/interpreter design, scripting environments, or
 
 # Features:
 
-Direct text output with PRINT <text>
-Simple user input via INPUT <prompt>
+Direct text output with print <text>
+Simple user input via input <prompt>
 Supports single-line comments using // <comment>
 Easy to extend and modify in C
 Designed for understanding low-level language implementation
 NeonScript is interpreted by a lightweight C program, making it a great starting point for those interested in building their own scripting languages or exploring system-level scripting.
 
 # Example
-PRINT Welcome to NeonScript!
+print Welcome to NeonScript!
 // This is a comment
-INPUT Enter your name:
-PRINT Thank you!
+input Enter your name:
+print Thank you!
 # Getting Started
 Clone the repository
 Compile the interpreter (gcc Main.c -o neonscript)
