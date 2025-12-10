@@ -15,10 +15,12 @@ Designed for understanding low-level language implementation
 NeonScript is interpreted by a lightweight C program, making it a great starting point for those interested in building their own scripting languages or exploring system-level scripting.
 
 # Example
+```
 print Welcome to NeonScript!
 // This is a comment
 input Enter your name:
 print Thank you!
+```
 # Getting Started
 Clone the repository
 Compile the interpreter (gcc Main.c -o neonscript)
